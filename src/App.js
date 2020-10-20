@@ -18,6 +18,8 @@ function App() {
       const servicesLogsResponse = await api.getAllServicesLogs();
       setServicesLogs(servicesLogsResponse.data);
 
+      let servicesMappedToSet = {};
+
       serviceResponse.data.map((service) => {
         const { id, name } = service;
         const appropriateLogs = servicesLogsResponse.data.filter((serviceLog) => {
@@ -25,12 +27,15 @@ function App() {
           if (serviceLog.service_id === id) {
             return serviceLog;
           }
-        })
-        setServicesMapped({
-          ...servicesMapped,
-          [id]: { id, name, logs: appropriateLogs }
         });
+
+        servicesMappedToSet = {
+          ...servicesMappedToSet,
+          [id]: { id, name, logs: appropriateLogs }
+        }
       });
+
+      setServicesMapped(servicesMappedToSet);
     }
     catch (e) {
       console.log(e);
@@ -45,10 +50,10 @@ function App() {
     if (!services || !servicesMapped) return;
 
     return services.map((service) => {
-      const { id } = service;
+      const { id, name } = service;
       const { logs } = servicesMapped[id] ? servicesMapped[id] : [];
       const props = { ...service, logs };
-      return <Service {...props} />;
+      return <Service key={`${id}-${name}`} {...props} />;
     });
   }
 
