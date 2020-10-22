@@ -51,8 +51,11 @@ function App() {
 
     return services.map((service) => {
       const { id, name } = service;
-      const { logs } = servicesMapped[id] ? servicesMapped[id] : [];
-      const props = { ...service, logs };
+      const { logs } = servicesMapped[id] ? servicesMapped[id] : {};
+      const props = {
+        ...service,
+        logs: logs ? logs : []
+      };
       return <Service key={`${id}-${name}`} {...props} />;
     });
   }

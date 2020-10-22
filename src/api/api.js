@@ -4,7 +4,7 @@ export default class ApiClient {
     async getAllStatuses() {
         return await axios.get(`${REACT_APP_API_URL}/statuses`);
     }
-    async getAllServicesLogs(interval = 7, limit = 20) {
+    async getAllServicesLogs(interval = 3, limit = 100) {
         return await axios.get(`${REACT_APP_API_URL}/services/log?interval=${interval}&limit=${limit}`);
     }
     async getAllServices() {
