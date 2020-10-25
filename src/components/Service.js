@@ -2,6 +2,7 @@ import React from 'react';
 import { format } from 'date-fns'
 import { stringStatus, STATUS_ERROR, STATUS_OK } from '../enum/statuses';
 
+const RENDER_ROWS = 24;
 
 function Service({ name, id, logs }) {
     //const lastLog = logs && logs[0] ? logs[0] : null;
@@ -24,8 +25,11 @@ function Service({ name, id, logs }) {
         </span>;
     }
 
-    const renderLogRow = (log) => {
+    const renderLogRow = (log, index) => {
         if (!log) return;
+
+        if (index > RENDER_ROWS) return;
+
         const { inserted_at, service_status, id } = log;
         const date = new Date(inserted_at);
 
@@ -38,18 +42,18 @@ function Service({ name, id, logs }) {
     }
 
     return (
-        <div key={`${id}-${name}`} className="row col-6 pb-5">
-            <div className="col-6">
+        <div key={`${id}-${name}`} className="row col-12 col-md-6 pb-5">
+            <div className="col-12 col-md-6">
                 <h1>{name}</h1>
             </div>
-            <div className="col-6">
+            <div className="col-12 col-md-6">
                 <table className="table">
                     <tbody>
                         <tr>
                             <th>At</th>
                             <th>Status</th>
                         </tr>
-                        {logs.map((log) => renderLogRow(log))}
+                        {logs.map((log, index) => renderLogRow(log, index))}
                     </tbody>
                 </table>
             </div>
